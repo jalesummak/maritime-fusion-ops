@@ -1,0 +1,46 @@
+services:
+  maritime-dashboard:
+    build:
+      context: ..
+      dockerfile: dashboard/Dockerfile
+    container_name: maritime_dashboard
+    restart: unless-stopped
+    ports:
+      - "8501:8501"
+    environment:
+      CHECKPOINT_DIR: /data/project_checkpoint
+      DATABASE_URL: ${DATABASE_URL:-}
+    volumes:
+      - "${CHECKPOINT_HOST_DIR}:/data/project_checkpoint"
+    networks:
+      - maritime-monitoring
+
+  nasa-firms-collector:
+    build:
+      context: ..
+      dockerfile: dashboard/Dockerfile
+    container_name: nasa_firms_collector
+    restart: unless-stopped
+    healthcheck:
+      disable: true
+    command:
+      - python
+      - -u
+      - dashboard/live_ingest.py
+      - --loop
+      - --interval-minutes
+      - "30"
+    environment:
+      CHECKPOINT_DIR: /data/project_checkpoint
+      NASA_FIRMS_MAP_KEY: ${NASA_FIRMS_MAP_KEY}
+      NASA_ALERT_FRP_MEDIUM: ${NASA_ALERT_FRP_MEDIUM:-10}
+      NASA_ALERT_FRP_HIGH: ${NASA_ALERT_FRP_HIGH:-20}
+      DATABASE_URL: ${DATABASE_URL:-}
+    volumes:
+      - "${CHECKPOINT_HOST_DIR}:/data/project_checkpoint"
+    networks:
+      - maritime-monitoring
+
+networks:
+  maritime-monitoring:
+    name: maritime_monitoring_network
