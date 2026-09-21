@@ -26,7 +26,7 @@ Core files:
 - `satellite_clean.pkl`
 - `news_clean.pkl`
 - one 3,289-row thermal-event checkpoint
-- `event_news_matches.pkl`
+- `event_news_matches_v2.pkl` (preferred); `event_news_matches.pkl` is a legacy fallback
 
 For CSV equivalents, use the same basenames. Event files are checked in this order: `thermal_events_verified`, `thermal_events_v2`, `thermal_anomaly_v4`, `thermal_events_final`. Compatible schemas are those used by the original research dashboard; the teaching notebook outputs do not reproduce every advanced field automatically.
 

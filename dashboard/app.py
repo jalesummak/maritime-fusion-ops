@@ -292,7 +292,7 @@ events, events_source = prefer_checkpoint_or_database(
     "thermal_events",
 )
 matches, matches_source = prefer_checkpoint_or_database(
-    ["event_news_matches.pkl"],
+    ["event_news_matches_v2.pkl", "event_news_matches.pkl"],
     "event_news_matches",
 )
 priority, priority_source = read_pickle_candidates(
